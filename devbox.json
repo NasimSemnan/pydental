@@ -7,10 +7,10 @@
     "init_hook": [
       "if [ ! -x .venv/bin/python ]; then python -m venv .venv; fi",
       ". .venv/bin/activate",
-      "if ! python -c 'import flask' >/dev/null 2>&1; then pip install -r requirements.txt; fi"
+      "if ! python -c 'import django' >/dev/null 2>&1; then pip install -r requirements.txt; fi"
     ],
     "scripts": {
-      "dev": "flask --app app run --debug"
+      "dev": "python manage.py runserver"
     }
   }
 }

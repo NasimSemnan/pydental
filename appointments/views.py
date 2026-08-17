@@ -1,7 +1,8 @@
 from django.contrib import messages
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 
-from .models import Appointment
+from .models import Appointment, BlogPost
 
 
 def home(request):
@@ -18,6 +19,21 @@ def home(request):
         {"question": "How often should I visit?", "answer": "Most patients benefit from a cleaning and checkup every six months. We will recommend a schedule tailored to your smile."},
     ]
     return render(request, "index.html", {"services": services, "faqs": faqs})
+
+
+def blog(request):
+    posts = BlogPost.objects.filter(is_published=True, published_at__lte=timezone.now())
+    return render(request, "blog/index.html", {"posts": posts})
+
+
+def blog_detail(request, slug):
+    post = get_object_or_404(
+        BlogPost,
+        slug=slug,
+        is_published=True,
+        published_at__lte=timezone.now(),
+    )
+    return render(request, "blog/detail.html", {"post": post})
 
 
 def contact(request):

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Appointment(models.Model):
@@ -13,3 +14,22 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.service}"
+
+
+class BlogPost(models.Model):
+    title = models.CharField(max_length=180)
+    slug = models.SlugField(max_length=200, unique=True)
+    category = models.CharField(max_length=80)
+    excerpt = models.TextField()
+    body = models.TextField()
+    featured_image = models.URLField(max_length=500)
+    author = models.CharField(max_length=120, default="Northstar Dental team")
+    read_time = models.PositiveSmallIntegerField(default=4)
+    published_at = models.DateTimeField(default=timezone.now)
+    is_published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["-published_at"]
+
+    def __str__(self):
+        return self.title

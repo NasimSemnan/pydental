@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from django.urls import reverse
 
 from .models import Appointment, BlogPost, PortfolioItem
 
@@ -53,7 +54,7 @@ def contact(request):
 
     if not name or not email or not service:
         messages.error(request, "Please complete your name, email, and service preference.")
-        return redirect("home")
+        return redirect(f"{reverse('home')}#appointment")
 
     Appointment.objects.create(
         name=name,
@@ -62,4 +63,4 @@ def contact(request):
         message=message,
     )
     messages.success(request, f"Thanks, {name.split()[0]}! We received your request and will be in touch shortly.")
-    return redirect("home")
+    return redirect(f"{reverse('home')}#appointment")

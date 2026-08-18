@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
-from .models import Appointment, BlogPost
+from .models import Appointment, BlogPost, PortfolioItem
 
 
 def home(request):
@@ -18,7 +18,13 @@ def home(request):
         {"question": "Do you see children?", "answer": "Absolutely. We welcome growing smiles and make visits easy, playful, and educational for children of all ages."},
         {"question": "How often should I visit?", "answer": "Most patients benefit from a cleaning and checkup every six months. We will recommend a schedule tailored to your smile."},
     ]
-    return render(request, "index.html", {"services": services, "faqs": faqs})
+    portfolio = PortfolioItem.objects.filter(is_featured=True)[:3]
+    return render(request, "index.html", {"services": services, "faqs": faqs, "portfolio": portfolio})
+
+
+def portfolio(request):
+    items = PortfolioItem.objects.filter(is_featured=True)
+    return render(request, "portfolio/index.html", {"items": items})
 
 
 def blog(request):

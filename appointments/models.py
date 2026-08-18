@@ -33,3 +33,19 @@ class BlogPost(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class PortfolioItem(models.Model):
+    title = models.CharField(max_length=160)
+    category = models.CharField(max_length=80)
+    description = models.TextField()
+    result = models.CharField(max_length=180)
+    image_url = models.URLField(max_length=500)
+    is_featured = models.BooleanField(default=True)
+    display_order = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        ordering = ["display_order", "title"]
+
+    def __str__(self):
+        return self.title
